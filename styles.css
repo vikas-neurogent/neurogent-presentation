@@ -220,10 +220,158 @@ body::before {
     transform: translateX(-100%);
 }
 
+/* Hide mobile elements on desktop */
+@media (min-width: 769px) {
+    .mobile-toc,
+    .mobile-menu-btn {
+        display: none !important;
+    }
+}
+
+/* Mobile Scrollable Layout */
+@media (max-width: 768px) {
+    .presentation-container {
+        overflow: visible;
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    .slide {
+        position: relative;
+        opacity: 1;
+        transform: none;
+        height: auto;
+        min-height: 100vh;
+        display: block;
+        background: var(--gradient-bg);
+        padding: 0;
+        margin: 0;
+    }
+    
+    .slide.active,
+    .slide.prev {
+        opacity: 1;
+        transform: none;
+    }
+    
+    .slide-content {
+        width: 100%;
+        max-width: none;
+        padding: var(--spacing-xl) var(--spacing-lg);
+        margin: 0;
+        min-height: auto;
+        display: block;
+        overflow: visible;
+    }
+    
+    /* Hide navigation on mobile */
+    .slide-nav {
+        display: none;
+    }
+    
+    /* Add section dividers */
+    .slide:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+    }
+    
+    /* Improve spacing between slides */
+    .slide + .slide {
+        margin-top: 0;
+    }
+}
+    
+    /* Mobile table of contents */
+    .mobile-toc {
+        position: fixed;
+        top: var(--spacing-md);
+        right: var(--spacing-md);
+        z-index: 1000;
+        background: var(--bg-glass);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 12px;
+        padding: var(--spacing-sm);
+        max-height: 60vh;
+        overflow-y: auto;
+        display: none;
+    }
+    
+    .mobile-toc.show {
+        display: block;
+    }
+    
+    .mobile-toc h3 {
+        font-size: var(--font-size-sm);
+        color: var(--text-accent);
+        margin-bottom: var(--spacing-xs);
+        text-align: center;
+    }
+    
+    .mobile-toc ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .mobile-toc li {
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .mobile-toc a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: var(--font-size-xs);
+        padding: var(--spacing-xs);
+        display: block;
+        border-radius: 6px;
+        transition: var(--transition-normal);
+    }
+    
+    .mobile-toc a:hover,
+    .mobile-toc a.active {
+        background: rgba(0, 212, 255, 0.1);
+        color: var(--text-primary);
+    }
+    
+    /* Mobile menu button */
+    .mobile-menu-btn {
+        position: fixed;
+        top: var(--spacing-md);
+        right: var(--spacing-md);
+        z-index: 1001;
+        background: var(--bg-glass);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--text-primary);
+        font-size: var(--font-size-lg);
+        transition: var(--transition-normal);
+    }
+    
+    .mobile-menu-btn:hover {
+        background: rgba(0, 212, 255, 0.1);
+        transform: scale(1.1);
+    }
+}
+
+/* Slide Content */
 .slide-content {
     width: 90%;
     max-width: 1200px;
-    padding: var(--spacing-lg) var(--spacing-xl);
+    padding: var(--spacing-xl) var(--spacing-2xl);
     text-align: left;
     min-height: calc(100vh - 6rem);
     display: flex;
@@ -231,6 +379,8 @@ body::before {
     justify-content: flex-start;
     overflow-y: auto;
     margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .text-center {
@@ -247,6 +397,8 @@ body::before {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: var(--spacing-lg);
+    margin-left: var(--spacing-lg);
+    margin-right: var(--spacing-lg);
     line-height: 1.1;
     animation: slideInUp 0.8s ease-out;
     letter-spacing: -0.03em;
@@ -257,6 +409,8 @@ body::before {
     font-size: var(--font-size-xl);
     color: var(--text-secondary);
     margin-bottom: var(--spacing-xl);
+    margin-left: var(--spacing-lg);
+    margin-right: var(--spacing-lg);
     animation: slideInUp 0.8s ease-out 0.2s both;
     font-weight: var(--font-weight-regular);
     line-height: 1.5;
@@ -325,6 +479,8 @@ body::before {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: var(--spacing-md);
+    margin-left: var(--spacing-lg);
+    margin-right: var(--spacing-lg);
     animation: slideInUp 0.8s ease-out 0.4s both;
     letter-spacing: -0.04em;
     text-shadow: 0 0 40px rgba(0, 212, 255, 0.4);
@@ -721,6 +877,7 @@ body::before {
     grid-template-columns: 2fr 1fr;
     gap: var(--spacing-xl);
     margin-top: var(--spacing-xl);
+    padding: 0 var(--spacing-lg);
 }
 
 .case-study-main {
@@ -731,11 +888,12 @@ body::before {
 
 .challenge, .solution, .features {
     background: var(--gradient-card);
-    padding: var(--spacing-lg);
+    padding: var(--spacing-xl);
     border-radius: 16px;
     border: 1px solid rgba(0, 212, 255, 0.2);
     animation: slideInLeft 0.6s ease-out var(--delay, 0s) both;
     backdrop-filter: blur(20px);
+    margin: 0 var(--spacing-sm);
 }
 
 .challenge { --delay: 0.1s; }
@@ -795,11 +953,12 @@ body::before {
 /* Case Study Impact */
 .case-study-impact {
     background: var(--gradient-neon);
-    padding: var(--spacing-lg);
+    padding: var(--spacing-xl);
     border-radius: 16px;
     text-align: center;
     animation: slideInRight 0.6s ease-out 0.4s both;
     box-shadow: var(--shadow-neon);
+    margin: 0 var(--spacing-sm);
 }
 
 .case-study-impact h3 {
@@ -1064,11 +1223,14 @@ body::before {
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xl);
     margin-top: var(--spacing-xl);
+    margin-left: var(--spacing-lg);
+    margin-right: var(--spacing-lg);
     align-items: center;
 }
 
 .cta-benefits {
     animation: slideInLeft 0.6s ease-out 0.3s both;
+    padding: 0 var(--spacing-md);
 }
 
 .cta-benefits h3 {
@@ -1104,6 +1266,7 @@ body::before {
 .cta-action {
     text-align: center;
     animation: slideInRight 0.6s ease-out 0.5s both;
+    padding: 0 var(--spacing-md);
 }
 
 .cta-button {
@@ -1121,6 +1284,7 @@ body::before {
     box-shadow: var(--shadow-neon);
     letter-spacing: -0.01em;
     border: none;
+    margin: 0 var(--spacing-sm);
 }
 
 .cta-button:hover {
@@ -1263,7 +1427,7 @@ body::before {
     }
 }
 
-/* Responsive Design */
+/* Enhanced Mobile Responsive Design */
 @media (max-width: 1024px) {
     .slide-content {
         width: 95%;
@@ -1285,48 +1449,98 @@ body::before {
     
     .cta-content {
         grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
     }
     
     .process-step {
         flex-direction: column;
         text-align: center;
     }
+    
+    .tech-stack {
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 768px) {
+    /* Navigation - Move to bottom center for mobile */
     .slide-nav {
-        top: var(--spacing-sm);
-        right: var(--spacing-sm);
-        padding: var(--spacing-xs) var(--spacing-sm);
+        position: fixed;
+        bottom: var(--spacing-lg);
+        top: auto;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        padding: var(--spacing-sm) var(--spacing-lg);
+        min-width: 200px;
+        z-index: 1000;
     }
     
-    .main-title {
-        font-size: var(--font-size-4xl);
-    }
-    
-    .slide-title {
-        font-size: var(--font-size-3xl);
-    }
-    
-    .slide-subtitle {
+    .nav-btn {
+        width: 44px;
+        height: 44px;
         font-size: var(--font-size-lg);
     }
     
+    /* Typography scaling */
+    .main-title {
+        font-size: var(--font-size-3xl);
+        line-height: 1.2;
+    }
+    
+    .slide-title {
+        font-size: var(--font-size-2xl);
+        line-height: 1.3;
+    }
+    
+    .slide-subtitle {
+        font-size: var(--font-size-base);
+        line-height: 1.5;
+    }
+    
+    .slide-subtitle.large {
+        font-size: var(--font-size-lg);
+    }
+    
+    /* Layout adjustments */
+    .slide-content {
+        width: 100%;
+        padding: var(--spacing-lg) var(--spacing-md);
+        margin-top: 0;
+        min-height: calc(100vh - 8rem);
+    }
+    
+    /* Grid layouts to single column */
     .problem-grid {
         grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
         max-width: 100%;
     }
     
     .differentiators {
         grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
         max-width: 100%;
     }
     
     .capabilities-grid {
         grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
         max-width: 100%;
     }
     
+    .solution-pillars {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+        max-width: 100%;
+    }
+    
+    .preview-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+    
+    /* Technology stack mobile optimization */
     .tech-stack {
         max-width: 100%;
         padding: var(--spacing-md);
@@ -1336,57 +1550,481 @@ body::before {
         grid-template-columns: 1fr;
         gap: var(--spacing-sm);
         text-align: center;
+        padding: var(--spacing-md);
     }
     
     .tech-category-label {
         justify-content: center;
-        margin-bottom: var(--spacing-sm);
+        margin-bottom: var(--spacing-md);
+        font-size: var(--font-size-lg);
     }
     
     .tech-items-row {
         justify-content: center;
+        flex-wrap: wrap;
+        gap: var(--spacing-xs);
     }
     
-    .solution-pillars {
-        grid-template-columns: 1fr;
-        max-width: 100%;
+    .tech-item {
+        font-size: var(--font-size-xs);
+        padding: var(--spacing-xs) var(--spacing-sm);
     }
     
-    .preview-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
+    /* Impact table mobile */
     .impact-table .table-row {
         grid-template-columns: 1fr;
+        gap: var(--spacing-xs);
     }
     
     .impact-table .table-cell {
         padding: var(--spacing-sm) var(--spacing-md);
+        text-align: center;
+    }
+    
+    .impact-table .table-row.header .table-cell {
+        font-size: var(--font-size-base);
+    }
+    
+    /* Case study layout mobile */
+    .case-study-layout {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+    
+    .case-study-impact {
+        order: -1;
+    }
+    
+    /* Logo adjustments */
+    .logo {
+        font-size: var(--font-size-lg);
+    }
+    
+    .logo-image {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .logo-image.large {
+        width: 60px;
+        height: 60px;
+    }
+    
+    /* Process timeline mobile */
+    .process-step {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-md);
+    }
+    
+    .step-number {
+        width: 50px;
+        height: 50px;
+        font-size: var(--font-size-xl);
+    }
+    
+    /* CTA mobile */
+    .cta-content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+        text-align: center;
+    }
+    
+    .cta-button {
+        padding: var(--spacing-md) var(--spacing-lg);
+        font-size: var(--font-size-base);
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Contact info mobile */
+    .contact-info {
+        gap: var(--spacing-sm);
+    }
+    
+    .contact-item {
+        font-size: var(--font-size-base);
+        padding: var(--spacing-sm);
     }
 }
 
 @media (max-width: 480px) {
+    /* Extra small devices */
     .slide-content {
-        padding: var(--spacing-lg) var(--spacing-md);
+        padding: var(--spacing-md) var(--spacing-sm);
     }
     
     .main-title {
-        font-size: var(--font-size-3xl);
+        font-size: var(--font-size-2xl);
     }
     
     .slide-title {
-        font-size: var(--font-size-2xl);
-    }
-    
-    .logo {
         font-size: var(--font-size-xl);
     }
     
-    .logo i {
+    .slide-subtitle {
+        font-size: var(--font-size-sm);
+    }
+    
+    .slide-subtitle.large {
+        font-size: var(--font-size-base);
+    }
+    
+    /* Navigation for very small screens */
+    .slide-nav {
+        bottom: var(--spacing-md);
+        padding: var(--spacing-xs) var(--spacing-md);
+        min-width: 160px;
+    }
+    
+    .nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: var(--font-size-base);
+    }
+    
+    .slide-counter {
+        font-size: var(--font-size-xs);
+        min-width: 35px;
+    }
+    
+    /* Grid adjustments for very small screens */
+    .preview-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+    
+    .problem-item,
+    .diff-item,
+    .capability-section,
+    .pillar {
+        padding: var(--spacing-md);
+    }
+    
+    .problem-icon,
+    .diff-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .pillar-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    /* Technology items for very small screens */
+    .tech-item {
+        font-size: var(--font-size-xs);
+        padding: var(--spacing-xs);
+    }
+    
+    .tech-items-row {
+        gap: var(--spacing-xs);
+    }
+    
+    /* Logo for very small screens */
+    .logo {
+        font-size: var(--font-size-base);
+        gap: var(--spacing-sm);
+    }
+    
+    .logo-image {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .logo-image.large {
+        width: 50px;
+        height: 50px;
+    }
+    
+    /* CTA button for very small screens */
+    .cta-button {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: var(--font-size-sm);
+    }
+    
+    /* Contact items for very small screens */
+    .contact-item {
+        font-size: var(--font-size-sm);
+        padding: var(--spacing-xs);
+    }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+    /* Increase touch targets */
+    .nav-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .problem-item,
+    .diff-item,
+    .capability-section,
+    .pillar,
+    .preview-item {
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    
+    .problem-item:active,
+    .diff-item:active,
+    .capability-section:active,
+    .pillar:active,
+    .preview-item:active {
+        transform: scale(0.98);
+    }
+    
+    /* Improve button interactions */
+    .cta-button {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .cta-button:active {
+        transform: scale(0.98);
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+    .slide-nav {
+        bottom: var(--spacing-sm);
+    }
+    
+    .slide-content {
+        min-height: calc(100vh - 6rem);
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+    
+    .main-title {
         font-size: var(--font-size-2xl);
     }
     
-    .preview-grid {
-        grid-template-columns: 1fr;
+    .slide-title {
+        font-size: var(--font-size-xl);
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .logo-image {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Swipe feedback animation */
+@keyframes swipeFeedback {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.5);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-50%) scale(1.1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50%) scale(1);
+    }
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+    /* Safe area support for notched devices */
+    .presentation-container {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+    
+    /* Prevent text selection during swipes */
+    .presentation-container {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Adjust navigation for safe area */
+    .slide-nav {
+        bottom: calc(var(--spacing-lg) + env(safe-area-inset-bottom));
+    }
+    
+    /* Adjust slide content for safe area */
+    .slide-content {
+        padding-top: calc(var(--spacing-lg) + env(safe-area-inset-top));
+        padding-bottom: calc(var(--spacing-lg) + env(safe-area-inset-bottom));
+    }
+    
+    /* Improve slide transitions for mobile */
+    .slide {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Add subtle slide indicators for mobile */
+    .slide::before {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 4px;
+        background: rgba(0, 212, 255, 0.3);
+        border-radius: 2px;
+        z-index: 10;
+    }
+    
+    /* Improve card interactions on mobile */
+    .problem-item,
+    .diff-item,
+    .capability-section,
+    .pillar,
+    .preview-item {
+        -webkit-tap-highlight-color: rgba(0, 212, 255, 0.1);
+    }
+    
+    /* Better button feedback on mobile */
+    .nav-btn:active {
+        transform: scale(0.95);
+        background: var(--primary-cyan);
+    }
+    
+    /* Improve scrolling on mobile */
+    .slide-content {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+}
+
+/* Mobile device specific styles */
+.mobile-device {
+    /* Optimize for mobile performance */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.mobile-device .slide {
+    /* Reduce animation complexity on mobile */
+    transition: all 0.3s ease;
+}
+
+.mobile-device .problem-item,
+.mobile-device .diff-item,
+.mobile-device .capability-section,
+.mobile-device .pillar {
+    /* Improve touch feedback on mobile */
+    -webkit-tap-highlight-color: rgba(0, 212, 255, 0.2);
+}
+
+/* Mobile scrollable layout improvements */
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    
+    .presentation-container {
+        overflow: visible;
+        height: auto;
+    }
+    
+    /* Improve spacing between sections */
+    .slide {
+        margin-bottom: 0;
+        padding-bottom: var(--spacing-xl);
+    }
+    
+    /* Better visual separation */
+    .slide:not(:last-child) {
+        border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+    }
+    
+    /* Optimize content for mobile scrolling */
+    .slide-content {
+        padding-top: calc(var(--spacing-xl) + 40px); /* Account for slide indicator */
+        padding-bottom: var(--spacing-xl);
+    }
+    
+    /* Improve card layouts for mobile */
+    .problem-item,
+    .diff-item,
+    .capability-section,
+    .pillar {
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    /* Better mobile typography */
+    .slide-title {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .slide-subtitle {
+        margin-bottom: var(--spacing-lg);
+    }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .slide {
+        transition: opacity 0.3s ease;
+    }
+    
+    .swipe-feedback {
+        display: none !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .problem-item,
+    .diff-item,
+    .capability-section,
+    .pillar,
+    .preview-item {
+        border: 2px solid var(--text-primary);
+    }
+    
+    .nav-btn {
+        border: 2px solid var(--text-primary);
+    }
+}
+
+/* Dark mode support (already implemented, but ensure consistency) */
+@media (prefers-color-scheme: dark) {
+    /* Styles are already dark-mode optimized */
+}
+
+/* Print styles for mobile */
+@media print {
+    .slide-nav,
+    .swipe-feedback {
+        display: none !important;
+    }
+    
+    .slide {
+        position: relative !important;
+        opacity: 1 !important;
+        transform: none !important;
+        page-break-after: always;
+        height: 100vh;
+    }
+    
+    .slide:last-child {
+        page-break-after: auto;
     }
 }

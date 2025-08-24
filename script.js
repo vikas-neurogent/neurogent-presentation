@@ -15,9 +15,251 @@ class PresentationController {
         this.bindEvents();
         this.updateSlideCounter();
         this.preloadNextSlide();
+        this.detectMobileDevice();
         
         // Auto-advance slides every 30 seconds (optional)
         // this.startAutoAdvance();
+    }
+    
+    detectMobileDevice() {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const isMobileViewport = window.innerWidth <= 768;
+        
+        if (isMobile || isTouchDevice || isMobileViewport) {
+            document.body.classList.add('mobile-device');
+            this.optimizeForMobile();
+            
+            // Enable scrollable layout on mobile
+            if (isMobileViewport) {
+                this.enableMobileScrollableLayout();
+            }
+        }
+    }
+    
+    enableMobileScrollableLayout() {
+        // Show all slides for mobile scrolling
+        this.slides.forEach(slide => {
+            slide.classList.add('active');
+            slide.classList.remove('prev');
+        });
+        
+        // Disable slide navigation on mobile
+        this.disableSlideNavigation();
+        
+        // Add smooth scrolling behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
+        
+        // Add mobile-specific event listeners
+        this.addMobileScrollListeners();
+    }
+    
+    disableSlideNavigation() {
+        // Hide navigation controls
+        const nav = document.querySelector('.slide-nav');
+        if (nav) {
+            nav.style.display = 'none';
+        }
+        
+        // Disable keyboard navigation
+        this.keyboardNavigationEnabled = false;
+        
+        // Disable touch swipe gestures
+        this.touchNavigationEnabled = false;
+    }
+    
+    addMobileScrollListeners() {
+        // Add scroll-based slide tracking
+        window.addEventListener('scroll', () => {
+            this.trackCurrentSlideOnScroll();
+        });
+        
+        // Add intersection observer for slide visibility
+        this.setupSlideIntersectionObserver();
+        
+        // Add mobile menu functionality
+        this.setupMobileMenu();
+    }
+    
+    setupMobileMenu() {
+        const menuBtn = document.getElementById('mobileMenuBtn');
+        const toc = document.getElementById('mobileToc');
+        
+        if (menuBtn && toc) {
+            // Toggle menu
+            menuBtn.addEventListener('click', () => {
+                toc.classList.toggle('show');
+                const icon = menuBtn.querySelector('i');
+                if (toc.classList.contains('show')) {
+                    icon.className = 'fas fa-times';
+                } else {
+                    icon.className = 'fas fa-bars';
+                }
+            });
+            
+            // Handle TOC navigation
+            const tocLinks = toc.querySelectorAll('a');
+            tocLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const slideIndex = parseInt(link.dataset.slide);
+                    this.scrollToSlide(slideIndex);
+                    toc.classList.remove('show');
+                    menuBtn.querySelector('i').className = 'fas fa-bars';
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!menuBtn.contains(e.target) && !toc.contains(e.target)) {
+                    toc.classList.remove('show');
+                    menuBtn.querySelector('i').className = 'fas fa-bars';
+                }
+            });
+        }
+    }
+    
+    scrollToSlide(slideIndex) {
+        if (slideIndex >= 0 && slideIndex < this.slides.length) {
+            const targetSlide = this.slides[slideIndex];
+            const offsetTop = targetSlide.offsetTop;
+            
+            window.scrollTo({
+                top: offsetTop,
+                behavior: 'smooth'
+            });
+            
+            this.currentSlide = slideIndex;
+            this.updateSlideCounter();
+        }
+    }
+    
+    trackCurrentSlideOnScroll() {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        
+        // Calculate which slide is most visible
+        this.slides.forEach((slide, index) => {
+            const slideTop = slide.offsetTop;
+            const slideHeight = slide.offsetHeight;
+            const slideCenter = slideTop + slideHeight / 2;
+            
+            if (scrollPosition + windowHeight / 2 >= slideTop && 
+                scrollPosition + windowHeight / 2 <= slideTop + slideHeight) {
+                this.currentSlide = index;
+                this.updateSlideCounter();
+            }
+        });
+    }
+    
+    setupSlideIntersectionObserver() {
+        const options = {
+            root: null,
+            rootMargin: '-50% 0px -50% 0px',
+            threshold: 0
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const slideIndex = Array.from(this.slides).indexOf(entry.target);
+                    if (slideIndex !== -1) {
+                        this.currentSlide = slideIndex;
+                        this.updateSlideCounter();
+                        this.triggerSlideAnimations();
+                    }
+                }
+            });
+        }, options);
+        
+        this.slides.forEach(slide => {
+            observer.observe(slide);
+        });
+    }
+    
+    optimizeForMobile() {
+        // Disable auto-advance on mobile for better user control
+        this.stopAutoAdvance();
+        
+        // Add mobile-specific event listeners
+        this.addMobileEventListeners();
+        
+        // Optimize performance for mobile
+        this.optimizeMobilePerformance();
+    }
+    
+    addMobileEventListeners() {
+        // Prevent zoom on double tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (event) => {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        
+        // Handle orientation changes
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                this.handleOrientationChange();
+            }, 100);
+        });
+        
+        // Handle resize events for mobile
+        window.addEventListener('resize', () => {
+            this.handleResize();
+        });
+    }
+    
+    handleOrientationChange() {
+        // Recalculate layout after orientation change
+        setTimeout(() => {
+            this.updateSlideLayout();
+        }, 300);
+    }
+    
+    handleResize() {
+        // Debounce resize events
+        clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = setTimeout(() => {
+            this.updateSlideLayout();
+        }, 250);
+    }
+    
+    updateSlideLayout() {
+        // Update any layout-dependent elements
+        const currentSlide = this.slides[this.currentSlide];
+        if (currentSlide) {
+            // Trigger layout recalculation
+            currentSlide.style.display = 'none';
+            currentSlide.offsetHeight; // Force reflow
+            currentSlide.style.display = 'flex';
+        }
+    }
+    
+    optimizeMobilePerformance() {
+        // Reduce animation complexity on mobile
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (prefersReducedMotion.matches) {
+            document.body.classList.add('reduce-motion');
+        }
+        
+        // Optimize images for mobile
+        this.optimizeImagesForMobile();
+    }
+    
+    optimizeImagesForMobile() {
+        const images = document.querySelectorAll('img');
+        images.forEach(img => {
+            // Add loading="lazy" for better performance
+            if (!img.hasAttribute('loading')) {
+                img.setAttribute('loading', 'lazy');
+            }
+            
+            // Optimize image rendering
+            img.style.imageRendering = 'optimizeQuality';
+        });
     }
     
     /* Navigation dots removed to prevent content overlap */
@@ -45,26 +287,72 @@ class PresentationController {
         let startY = 0;
         let endX = 0;
         let endY = 0;
+        let startTime = 0;
+        let isSwiping = false;
         
         document.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
+            startTime = Date.now();
+            isSwiping = false;
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (startX === 0) return;
+            
+            const currentX = e.touches[0].clientX;
+            const currentY = e.touches[0].clientY;
+            const deltaX = Math.abs(currentX - startX);
+            const deltaY = Math.abs(currentY - startY);
+            
+            // Start swiping if horizontal movement is significant
+            if (deltaX > 10 && deltaX > deltaY) {
+                isSwiping = true;
+                e.preventDefault(); // Prevent scrolling during swipe
+            }
         });
         
         document.addEventListener('touchend', (e) => {
+            if (!isSwiping) return;
+            
             endX = e.changedTouches[0].clientX;
             endY = e.changedTouches[0].clientY;
-            this.handleSwipe(startX, startY, endX, endY);
+            const endTime = Date.now();
+            
+            this.handleSwipe(startX, startY, endX, endY, startTime, endTime);
+            
+            // Reset values
+            startX = 0;
+            startY = 0;
+            isSwiping = false;
+        });
+        
+        // Prevent context menu on long press
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
         });
     }
     
-    handleSwipe(startX, startY, endX, endY) {
+    handleSwipe(startX, startY, endX, endY, startTime, endTime) {
+        // Skip swipe navigation on mobile
+        if (window.innerWidth <= 768) {
+            return;
+        }
+        
         const deltaX = endX - startX;
         const deltaY = endY - startY;
+        const deltaTime = endTime - startTime;
         const minSwipeDistance = 50;
+        const maxSwipeTime = 500; // Maximum time for a swipe gesture
         
-        // Only handle horizontal swipes
-        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+        // Only handle horizontal swipes that are fast enough
+        if (Math.abs(deltaX) > Math.abs(deltaY) && 
+            Math.abs(deltaX) > minSwipeDistance && 
+            deltaTime < maxSwipeTime) {
+            
+            // Add visual feedback
+            this.showSwipeFeedback(deltaX > 0 ? 'left' : 'right');
+            
             if (deltaX > 0) {
                 this.previousSlide();
             } else {
@@ -73,7 +361,45 @@ class PresentationController {
         }
     }
     
+    showSwipeFeedback(direction) {
+        // Create a temporary visual indicator for swipe direction
+        const feedback = document.createElement('div');
+        feedback.className = 'swipe-feedback';
+        feedback.style.cssText = `
+            position: fixed;
+            top: 50%;
+            ${direction === 'left' ? 'right' : 'left'}: 20px;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: swipeFeedback 0.3s ease-out forwards;
+        `;
+        
+        feedback.innerHTML = `<i class="fas fa-chevron-${direction === 'left' ? 'left' : 'right'}" style="color: var(--primary-cyan); font-size: 24px;"></i>`;
+        
+        document.body.appendChild(feedback);
+        
+        // Remove feedback after animation
+        setTimeout(() => {
+            if (feedback.parentNode) {
+                feedback.parentNode.removeChild(feedback);
+            }
+        }, 300);
+    }
+    
     handleKeyboard(e) {
+        // Skip keyboard navigation on mobile
+        if (window.innerWidth <= 768) {
+            return;
+        }
+        
         switch (e.key) {
             case 'ArrowRight':
             case ' ':

@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0a0f">
     <title>neurogent.ai - Custom AI Solutions</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -18,9 +22,36 @@
                 <button class="nav-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
             </div>
         </nav>
+        
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <!-- Mobile Table of Contents -->
+        <div class="mobile-toc" id="mobileToc">
+            <h3>Contents</h3>
+            <ul>
+                <li><a href="#slide-1" data-slide="0">Welcome</a></li>
+                <li><a href="#slide-2" data-slide="1">The Problem</a></li>
+                <li><a href="#slide-3" data-slide="2">The Solution</a></li>
+                <li><a href="#slide-4" data-slide="3">Why neurogent.ai?</a></li>
+                <li><a href="#slide-5" data-slide="4">Our Capabilities</a></li>
+                <li><a href="#slide-6" data-slide="5">Case Studies</a></li>
+                <li><a href="#slide-7" data-slide="6">Healthcare Case Study</a></li>
+                <li><a href="#slide-8" data-slide="7">Finance Case Study</a></li>
+                <li><a href="#slide-9" data-slide="8">Logistics Case Study</a></li>
+                <li><a href="#slide-10" data-slide="9">Insurance Case Study</a></li>
+                <li><a href="#slide-11" data-slide="10">Impact Metrics</a></li>
+                <li><a href="#slide-12" data-slide="11">Technology Stack</a></li>
+                <li><a href="#slide-13" data-slide="12">Process</a></li>
+                <li><a href="#slide-14" data-slide="13">Get Started</a></li>
+                <li><a href="#slide-15" data-slide="14">Contact</a></li>
+            </ul>
+        </div>
 
         <!-- Slide 1: Title Slide -->
-        <section class="slide active" id="slide-1">
+        <section class="slide active" id="slide-1" data-slide-title="Welcome">
             <div class="slide-content title-slide">
                 <div class="logo-container">
                     <div class="logo">
@@ -43,7 +74,7 @@
         </section>
 
         <!-- Slide 2: The Problem -->
-        <section class="slide" id="slide-2">
+        <section class="slide" id="slide-2" data-slide-title="The Problem">
             <div class="slide-content">
                 <h1 class="slide-title">Your Manual Processes Are Bleeding Money</h1>
                 <p class="slide-subtitle">Every day you delay automation, competitors gain ground and profits slip away. The cost of inaction is now $50,000+ per month for most businesses.</p>
@@ -85,7 +116,7 @@
         </section>
 
         <!-- Slide 3: The Solution -->
-        <section class="slide" id="slide-3">
+        <section class="slide" id="slide-3" data-slide-title="The Solution">
             <div class="slide-content">
                 <h1 class="slide-title">Stop Losing Money. Start Automating.</h1>
                 <p class="slide-subtitle">While competitors struggle with generic solutions, we deliver custom AI that integrates seamlessly and delivers results in 90 days or less.</p>
@@ -120,7 +151,7 @@
         </section>
 
         <!-- Slide 4: Why neurogent.ai? -->
-        <section class="slide" id="slide-4">
+        <section class="slide" id="slide-4" data-slide-title="Why neurogent.ai?">
             <div class="slide-content">
                 <h1 class="slide-title">Why Companies Choose neurogent.ai</h1>
                 
@@ -161,7 +192,7 @@
         </section>
 
         <!-- Slide 5: Our Core Capabilities -->
-        <section class="slide" id="slide-5">
+        <section class="slide" id="slide-5" data-slide-title="Our Capabilities">
             <div class="slide-content">
                 <h1 class="slide-title">What We Build</h1>
                 
@@ -206,7 +237,7 @@
         </section>
 
         <!-- Slide 6: Our Work Transition -->
-        <section class="slide" id="slide-6">
+        <section class="slide" id="slide-6" data-slide-title="Case Studies">
             <div class="slide-content text-center">
                 <h1 class="slide-title">Trusted by Fast-Growing Companies</h1>
                 <p class="slide-subtitle large">Real results from real businesses who chose to automate before their competitors.</p>
@@ -239,7 +270,7 @@
         </section>
 
         <!-- Slide 7: Case Study #1 - Healthcare -->
-        <section class="slide" id="slide-7">
+        <section class="slide" id="slide-7" data-slide-title="Healthcare Case Study">
             <div class="slide-content">
                 <h1 class="slide-title">From $800K Annual Losses to 15% Revenue Growth</h1>
                 
@@ -291,7 +322,7 @@
         </section>
 
         <!-- Slide 8: Case Study #2 - Finance -->
-        <section class="slide" id="slide-8">
+        <section class="slide" id="slide-8" data-slide-title="Finance Case Study">
             <div class="slide-content">
                 <h1 class="slide-title">300% Lead Conversion Increase in 45 Days</h1>
                 
@@ -339,7 +370,7 @@
         </section>
 
         <!-- Slide 9: Case Study #3 - Logistics -->
-        <section class="slide" id="slide-9">
+        <section class="slide" id="slide-9" data-slide-title="Logistics Case Study">
             <div class="slide-content">
                 <h1 class="slide-title">$200K Cost Savings: 100K Drivers in 90 Days</h1>
                 
@@ -387,7 +418,7 @@
         </section>
 
         <!-- Slide 10: Case Study #4 - Insurance -->
-        <section class="slide" id="slide-10">
+        <section class="slide" id="slide-10" data-slide-title="Insurance Case Study">
             <div class="slide-content">
                 <h1 class="slide-title">80% Fewer Claim Rejections, $1.2M Recovered</h1>
                 
@@ -435,7 +466,7 @@
         </section>
 
         <!-- Slide 11: Proven Impact -->
-        <section class="slide" id="slide-11">
+        <section class="slide" id="slide-11" data-slide-title="Impact Metrics">
             <div class="slide-content">
                 <h1 class="slide-title">We Deliver Tangible Business Results</h1>
                 <p class="slide-subtitle">Across industries, our solutions drive efficiency, growth, and profitability.</p>
@@ -474,7 +505,7 @@
         </section>
 
         <!-- Slide 12: Technology Stack -->
-        <section class="slide" id="slide-12">
+        <section class="slide" id="slide-12" data-slide-title="Technology Stack">
             <div class="slide-content">
                 <h1 class="slide-title">Cutting-Edge AI Technology Stack</h1>
                 <p class="slide-subtitle">We leverage the latest AI technologies and enterprise-grade infrastructure to deliver scalable, intelligent solutions that drive real business impact.</p>
@@ -684,7 +715,7 @@
         </section>
 
         <!-- Slide 13: Engagement Process -->
-        <section class="slide" id="slide-13">
+        <section class="slide" id="slide-13" data-slide-title="Process">
             <div class="slide-content">
                 <h1 class="slide-title">Get Results in 90 Days, Not 9 Months</h1>
                 <p class="slide-subtitle">While others promise eventual results, we deliver working solutions fast with guaranteed ROI.</p>
@@ -728,7 +759,7 @@
         </section>
 
         <!-- Slide 14: Call to Action -->
-        <section class="slide" id="slide-14">
+        <section class="slide" id="slide-14" data-slide-title="Get Started">
             <div class="slide-content text-center">
                 <h1 class="slide-title">Don't Let Competitors Win Your Market</h1>
                 <p class="slide-subtitle large">Every month you wait costs $100K+ in lost opportunities. Start your transformation today with zero risk.</p>
@@ -756,7 +787,7 @@
         </section>
 
         <!-- Slide 15: Thank You & Contact -->
-        <section class="slide" id="slide-15">
+        <section class="slide" id="slide-15" data-slide-title="Contact">
             <div class="slide-content text-center">
                 <div class="contact-slide">
                     <div class="logo-container">
