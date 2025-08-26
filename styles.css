@@ -2028,3 +2028,255 @@ body::before {
         page-break-after: auto;
     }
 }
+
+/* Desktop: Keep fixed height and internal scrolling */
+@media (min-width: 1024px) {
+    .presentation-container {
+        overflow-x: hidden;
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        overflow-y: hidden; /* Prevent page scroll on desktop */
+    }
+    
+    /* Disable page scroll on desktop */
+    html {
+        scroll-behavior: auto;
+    }
+    
+    /* Desktop: Keep internal scrolling only for desktop screens */
+    .slide {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--spacing-lg);
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    
+    .slide-content {
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+        /* Keep scrollbar styling for desktop */
+        scrollbar-width: thin;
+        scrollbar-color: rgba(0, 212, 255, 0.3) transparent;
+    }
+    
+    /* Show scrollbars on desktop */
+    .slide-content::-webkit-scrollbar {
+        width: 6px;
+        display: block;
+    }
+    
+    .slide-content::-webkit-scrollbar-track {
+        background: transparent;
+        display: block;
+    }
+    
+    .slide-content::-webkit-scrollbar-thumb {
+        background: rgba(0, 212, 255, 0.3);
+        border-radius: 3px;
+        display: block;
+    }
+    
+    .slide-content::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 212, 255, 0.5);
+    }
+}
+
+/* Standard Desktop (1366px - 1919px) - Specific fixes for 1366x768 */
+@media (min-width: 1366px) and (max-width: 1919px) {
+    .slide-content {
+        width: 85%;
+        max-width: 1200px;
+        padding: var(--spacing-xl) var(--spacing-2xl);
+        /* Much more aggressive padding to prevent cutoff on 1366x768 */
+        padding-top: calc(var(--spacing-xl) + 4rem);
+        padding-bottom: calc(var(--spacing-xl) + 4rem);
+        /* Ensure content fits within viewport */
+        min-height: calc(100vh - 8rem);
+        max-height: calc(100vh - 4rem);
+        overflow-y: auto;
+    }
+    
+    /* Ensure slides have proper spacing */
+    .slide {
+        padding-top: calc(var(--spacing-lg) + 2rem);
+        padding-bottom: calc(var(--spacing-lg) + 2rem);
+        min-height: calc(100vh - 4rem);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .main-title {
+        font-size: var(--font-size-5xl);
+        line-height: 1.1;
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .slide-title {
+        font-size: var(--font-size-4xl);
+        line-height: 1.2;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .slide-subtitle {
+        font-size: var(--font-size-xl);
+        line-height: 1.4;
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .slide-subtitle.large {
+        font-size: var(--font-size-2xl);
+    }
+    
+    /* Ensure proper spacing for 1366x768 */
+    .problem-grid,
+    .differentiators,
+    .capabilities-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-lg);
+        max-width: 1000px;
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .solution-pillars {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-lg);
+        max-width: 1000px;
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    /* Scale cards appropriately */
+    .problem-item,
+    .diff-item,
+    .capability-section,
+    .pillar {
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .problem-item h3,
+    .diff-item h3,
+    .capability-section h3,
+    .pillar h3 {
+        font-size: var(--font-size-lg);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .problem-item p,
+    .diff-item p,
+    .capability-section p {
+        font-size: var(--font-size-base);
+        line-height: 1.4;
+    }
+    
+    /* Case study layout for standard desktop */
+    .case-study-layout {
+        grid-template-columns: 2fr 1fr;
+        gap: var(--spacing-lg);
+        max-width: 1000px;
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    /* Technology stack for standard desktop */
+    .tech-stack {
+        max-width: 1000px;
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .tech-item {
+        font-size: var(--font-size-sm);
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+    
+    /* Reduce spacing for compact layout */
+    .problem-item,
+    .diff-item,
+    .capability-section,
+    .pillar {
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    /* Ensure navigation doesn't interfere */
+    .slide-nav {
+        position: fixed;
+        top: var(--spacing-lg);
+        right: var(--spacing-lg);
+        z-index: 1000;
+    }
+}
+
+/* Additional specific fix for 1366x768 */
+@media (width: 1366px) and (height: 768px) {
+    .slide-content {
+        width: 90%;
+        max-width: 1100px;
+        padding: var(--spacing-lg) var(--spacing-xl);
+        /* Maximum padding for this specific resolution */
+        padding-top: calc(var(--spacing-lg) + 5rem);
+        padding-bottom: calc(var(--spacing-lg) + 5rem);
+        min-height: calc(100vh - 10rem);
+        max-height: calc(100vh - 6rem);
+        overflow-y: auto;
+    }
+    
+    .slide {
+        padding-top: calc(var(--spacing-md) + 3rem);
+        padding-bottom: calc(var(--spacing-md) + 3rem);
+        min-height: calc(100vh - 6rem);
+    }
+    
+    /* Reduce font sizes slightly for this resolution */
+    .main-title {
+        font-size: var(--font-size-4xl);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .slide-title {
+        font-size: var(--font-size-3xl);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .slide-subtitle {
+        font-size: var(--font-size-lg);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    /* Reduce spacing between elements */
+    .problem-grid,
+    .differentiators,
+    .capabilities-grid {
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .solution-pillars {
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .problem-item,
+    .diff-item,
+    .capability-section,
+    .pillar {
+        padding: var(--spacing-sm);
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .case-study-layout {
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .tech-stack {
+        padding: var(--spacing-sm);
+        margin-bottom: var(--spacing-md);
+    }
+}
+
+
+
